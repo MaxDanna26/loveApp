@@ -63,14 +63,14 @@ export const Container = styled.div`
   align-items: center;
   width: 90%;
   gap: 0.4rem;
-  margin: 0.2rem;
+  margin: ${({ $margin }) => $margin ? $margin : '0.2rem'};
   background-color: ${({ $bgColor }) => $bgColor || "transparent"};
   padding: .5rem;
   border-radius: 6px;
   text-align: left;
 `;
 
-export const PlanCard = styled.div`
+export const CountCard = styled.div`
   display: flex;
   flex-direction: ${({ $direction }) => $direction ? $direction : 'row'} ;
   justify-content: center;
@@ -82,7 +82,7 @@ export const PlanCard = styled.div`
   padding: .5rem;
   border-radius: 6px;
   text-align: center;
-  border: 1px solid rgba(237,83,121,1);
+  border: 1px solid rgba(237,83,121,1);;
 -webkit-box-shadow: -3px 0px 3px 0px rgba(237,83,121,1);
 -moz-box-shadow: -3px 0px 3px 0px rgba(237,83,121,1);
 box-shadow: -3px 0px 3px 0px rgba(237,83,121,1);

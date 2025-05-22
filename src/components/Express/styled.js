@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Title = styled.h1`
 text-align: center;
-margin: 0;
+margin: 0.5rem;
 width: 100%;
 font-weight: bold;
 color: #ED5379;
@@ -152,4 +152,23 @@ export const CloseButton = styled.button`
     color: #A68E46;
     transform: scale(1.1);
   }
+`;
+
+
+export const NoteCard = styled.div`
+  background: #fff0f5;
+  border: 1px solid #ED5379;
+  padding: 1rem;
+  border-radius: 10px;
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const Text = styled.p`
+  margin: 0;
+  font-size: 1rem;
+  text-align: center;
+  word-break: break-word;
 `;

@@ -11,13 +11,13 @@ export const createExpense = async (idUser, obj) => {
 
 // UPDATE
 export const updateExpense = async (userId, id, obj) => {
-  const docRef = doc(db, 'users', userId, 'expense', id);
+  const docRef = doc(db, 'loveApp', userId, 'expense', id);
   await updateDoc(docRef, obj)
 }
 
 // READ
-export const getExpenses = async () => {
-  const colRef = collection(db, collectionName);
+export const getExpenses = async (idUser) => {
+  const colRef = collection(db, collectionName, idUser, 'expense');
   const result = await getDocs(query(colRef));
   return getArrayFromCollection(result);
 }
@@ -38,7 +38,7 @@ export const getExpenseById = async (userId, id) => {
 
 // DELETE
 export const deleteExpense = async (userId, id) => {
-  const docRef = doc(db, 'users', userId, 'tasks', id);
+  const docRef = doc(db, 'loveApp', userId, 'expense', id);
   await deleteDoc(docRef);
 }
 

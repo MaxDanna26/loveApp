@@ -12,7 +12,10 @@ flex-direction: column;
 justify-content: center;
 align-items: center;
 text-align: center;
-position: relative;
+position: absolute;
+top: 30%;
+left: 50%;
+transform: translate(-50%, -50%);
 gap: .5rem;
 `;
 
@@ -50,7 +53,7 @@ color: black;
 border: 1px solid black;
 border-radius: 10px;
 padding: 15px;
-text-align: initial;
+text-align: center;
 &:hover{
   cursor: pointer;
 }

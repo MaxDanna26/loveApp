@@ -2,6 +2,7 @@ import { Button, Container } from './styled';
 import { useState } from 'react';
 import PropTypes from 'prop-types'
 import PopUp from './PopUp';
+import { FaRandom } from "react-icons/fa";
 
 const RandomPlan = ({ plans }) => {
   const [planRandom, setPlanRandom] = useState('');
@@ -18,7 +19,7 @@ const RandomPlan = ({ plans }) => {
   return (
     <Container>
       <Container>
-        <Button onClick={() => handleRandom()}>Plan random</Button>
+        <Button onClick={() => handleRandom()}><FaRandom />Plan random</Button>
         <PopUp visible={visible} setVisible={setVisible} planRandom={planRandom} />
       </Container>
     </Container>

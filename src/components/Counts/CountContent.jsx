@@ -1,18 +1,18 @@
 import { useUserContext } from '../../provider/UserProvider';
 import { FaPencilAlt } from 'react-icons/fa';
 import PropTypes from 'prop-types';
-import { deletePlan } from './api';
 import { Magic, Like, Container } from './styled';
 import { FcLike } from 'react-icons/fc';
+import { deleteExpense } from './api';
 
-const PlanContent = ({ id, content, reload, edit }) => {
+const CountContent = ({ id, content, price, date, reload, edit }) => {
   const { user } = useUserContext();
 
   return (
     <Container>
-      <Magic>{content}</Magic>
+      <Magic><strong>{date}</strong> - {content} - {price} €</Magic>
       <Like onClick={async () => {
-        await deletePlan(user.uid, id);
+        await deleteExpense(user.uid, id);
         reload();
       }}>
         <FcLike size='25px' />
@@ -24,11 +24,13 @@ const PlanContent = ({ id, content, reload, edit }) => {
   );
 };
 
-export default PlanContent;
+export default CountContent;
 
-PlanContent.propTypes = {
+CountContent.propTypes = {
   reload: PropTypes.func,
   edit: PropTypes.func,
   id: PropTypes.string,
   content: PropTypes.string,
+  price: PropTypes.string,
+  date: PropTypes.string,
 };
