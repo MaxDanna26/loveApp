@@ -8,6 +8,15 @@ font-weight: bold;
 color: #ED5379;
 `;
 
+
+export const TitlePop = styled.h1`
+text-align: center;
+margin: 0;
+width: 100%;
+font-weight: bold;
+color: white;
+`;
+
 export const Magic = styled.div`
 width: 100%;
 margin: 0.4rem;
@@ -125,7 +134,7 @@ export const Back = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #403B22;
+  background-color: #ED5379;
   width: 320px;
   padding: 10px;
   border-radius: 12px;

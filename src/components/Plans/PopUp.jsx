@@ -1,4 +1,4 @@
-import { Back, Overlay, CloseButton, Container, Title } from './styled';
+import { Back, Overlay, CloseButton, Container, TitlePop } from './styled';
 import PropTypes from 'prop-types';
 
 const PopUp = ({ visible, setVisible, planRandom }) => {
@@ -8,7 +8,7 @@ const PopUp = ({ visible, setVisible, planRandom }) => {
       <Back onClick={(e) => e.stopPropagation()}>
         <Container $direction='column' >
           <CloseButton onClick={() => setVisible(false)}>&times;</CloseButton>
-          <Title>{planRandom}</Title>
+          <TitlePop>{planRandom}</TitlePop>
         </Container>
       </Back>
     </Overlay>
