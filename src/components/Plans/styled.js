@@ -2,7 +2,8 @@ import styled from "styled-components";
 
 export const Title = styled.h1`
 text-align: center;
-margin: 0;
+white-space: nowrap;
+margin: 0.5rem;
 width: 100%;
 font-weight: bold;
 color: #ED5379;
@@ -76,7 +77,7 @@ export const Container = styled.div`
   background-color: ${({ $bgColor }) => $bgColor || "transparent"};
   padding: .5rem;
   border-radius: 6px;
-  text-align: left;
+  text-align: center;
 `;
 
 export const PlanCard = styled.div`
@@ -90,7 +91,6 @@ export const PlanCard = styled.div`
   background-color: ${({ $bgColor }) => $bgColor || "transparent"};
   padding: .5rem;
   border-radius: 6px;
-  text-align: center;
   border: 1px solid rgba(237,83,121,1);
 -webkit-box-shadow: -3px 0px 3px 0px rgba(237,83,121,1);
 -moz-box-shadow: -3px 0px 3px 0px rgba(237,83,121,1);

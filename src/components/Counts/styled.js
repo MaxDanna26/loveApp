@@ -11,16 +11,21 @@ color: #ED5379;
 export const Magic = styled.div`
 width: 100%;
 margin: 0.4rem;
+white-space: nowrap;
+`;
+
+export const Strong = styled.strong`
+font-size: 1.1rem;
+font-weight: bold;
 `;
 
 export const Input = styled.input`
-  width: 60%;
+  width: 90%;
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;
   text-align: center;
   border: 1px solid #ED5379;
-
 `;
 
 export const Like = styled.button`
@@ -61,13 +66,11 @@ export const Container = styled.div`
   flex-direction: ${({ $direction }) => $direction ? $direction : 'row'} ;
   justify-content: center;
   align-items: center;
-  width: 90%;
-  gap: 0.4rem;
+  gap: 0.5rem;
   margin: ${({ $margin }) => $margin ? $margin : '0.2rem'};
   background-color: ${({ $bgColor }) => $bgColor || "transparent"};
   padding: .5rem;
-  border-radius: 6px;
-  text-align: left;
+  border-radius: 10px;
 `;
 
 export const CountCard = styled.div`
@@ -75,7 +78,7 @@ export const CountCard = styled.div`
   flex-direction: ${({ $direction }) => $direction ? $direction : 'row'} ;
   justify-content: center;
   align-items: center;
-  width: 90%;
+  width: 95%;
   gap: 0.4rem;
   margin: 0.2rem;
   background-color: ${({ $bgColor }) => $bgColor || "transparent"};
@@ -86,18 +89,6 @@ export const CountCard = styled.div`
 -webkit-box-shadow: -3px 0px 3px 0px rgba(237,83,121,1);
 -moz-box-shadow: -3px 0px 3px 0px rgba(237,83,121,1);
 box-shadow: -3px 0px 3px 0px rgba(237,83,121,1);
-`;
-
-export const Main = styled.div`
-  width: 90%;
-  margin: 1rem auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 1rem;
-  border-radius: 8px;
 `;
 
 export const Inputs = styled.div`

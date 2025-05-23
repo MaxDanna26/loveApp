@@ -40,7 +40,8 @@ const Counts = () => {
           </CountCard>
         ))}
 
-        <Container $margin='1.5rem 0.2rem' $direction='column'>
+        <Container style={{ background: '#fff0f5', border: '1px solid #ED5379' }} $margin='1.5rem 0.2rem' $direction='column'>
+
           <Input type="date" value={date} placeholder="Fecha del gasto" onChange={(e) => setDate(e.target.value)}></Input>
           <Input type="text" value={gasto} placeholder="Tipo de gasto" onChange={(e) => setGasto(e.target.value)} ></Input>
           <Input type="number" value={price} placeholder="Precio del gasto" onChange={(e) => setPrice(e.target.value)}></Input>
@@ -60,7 +61,7 @@ const Counts = () => {
           />
         )}
       </Container>
-    </Container>
+    </Container >
   )
 }
 

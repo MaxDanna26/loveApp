@@ -18,8 +18,8 @@ export const GlobalStyle = createGlobalStyle`
 `;
 
 export const Grid = styled.div`
-display: flex;
-flex-direction: row;
+display: grid;
+grid-template-columns: 1fr 1fr;
 flex-wrap: wrap;
 justify-content: center;
 padding: 10px;
@@ -27,10 +27,10 @@ gap: 1rem;
 `;
 
 export const Imagen = styled.img`
-width: 300px;
+width: 100%;
 height: auto;
 border-radius: 10px;
-border: 3px solid  #ED5379;;
+border: 2px solid  #ED5379;;
 `;
 
 export const Title = styled.h1`

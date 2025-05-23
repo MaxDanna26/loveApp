@@ -58,34 +58,15 @@ padding: 1rem 1rem;
 
 export const Container = styled.div`
   display: flex;
-  flex-direction: ${({ $direction }) => $direction ? $direction : 'row'} ;
+  flex-direction: ${({ $direction }) => $direction ? $direction : 'row'};
   justify-content: center;
   align-items: center;
-  width: 90%;
-  gap: 0.4rem;
-  margin: 0.2rem;
-  background-color: ${({ $bgColor }) => $bgColor || "transparent"};
-  padding: .5rem;
-  border-radius: 6px;
-  text-align: left;
-`;
-
-export const PlanCard = styled.div`
-  display: flex;
-  flex-direction: ${({ $direction }) => $direction ? $direction : 'row'} ;
-  justify-content: center;
-  align-items: center;
-  width: 90%;
   gap: 0.4rem;
   margin: 0.2rem;
   background-color: ${({ $bgColor }) => $bgColor || "transparent"};
   padding: .5rem;
   border-radius: 6px;
   text-align: center;
-  border: 1px solid rgba(237,83,121,1);
--webkit-box-shadow: -3px 0px 3px 0px rgba(237,83,121,1);
--moz-box-shadow: -3px 0px 3px 0px rgba(237,83,121,1);
-box-shadow: -3px 0px 3px 0px rgba(237,83,121,1);
 `;
 
 export const Main = styled.div`
@@ -160,14 +141,14 @@ export const NoteCard = styled.div`
   border: 1px solid #ED5379;
   padding: 1rem;
   border-radius: 10px;
-  width: 70%;
+  width: 90%;
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
 
 export const Text = styled.p`
-  margin: 0;
+  margin: 0.5rem;
   font-size: 1rem;
   text-align: center;
   word-break: break-word;

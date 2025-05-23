@@ -1,7 +1,7 @@
 import { useUserContext } from '../../provider/UserProvider';
 import { FaPencilAlt } from 'react-icons/fa';
 import PropTypes from 'prop-types';
-import { Magic, Like, Container } from './styled';
+import { Magic, Like, Container, Strong } from './styled';
 import { FcLike } from 'react-icons/fc';
 import { deleteExpense } from './api';
 
@@ -10,7 +10,8 @@ const CountContent = ({ id, content, price, date, reload, edit }) => {
 
   return (
     <Container>
-      <Magic><strong>{date}</strong> - {content} - {price} €</Magic>
+      <Magic>{date} | <Strong>{content}</Strong> | {price}€</Magic>
+
       <Like onClick={async () => {
         await deleteExpense(user.uid, id);
         reload();
