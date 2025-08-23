@@ -1,37 +1,44 @@
-import { useUserContext } from '../../provider/UserProvider';
-import { FaPencilAlt } from 'react-icons/fa';
-import PropTypes from 'prop-types';
-import { Magic, Like, Container, Strong } from './styled';
-import { FcLike } from 'react-icons/fc';
-import { deleteExpense } from './api';
+import PropTypes from "prop-types";
+import { FaPencilAlt, FaTrash } from "react-icons/fa";
 
-const CountContent = ({ id, content, price, date, reload, edit }) => {
-  const { user } = useUserContext();
-
+const CountContent = ({ id, content, price, dateLabel, onEdit, onAskDelete }) => {
   return (
-    <Container>
-      <Magic>{date} | <Strong>{content}</Strong> | {price}€</Magic>
+    <div className="card card-love h-100">
+      {/* Header con fecha y acciones */}
+      <div className="card-love-header">
+        <div className="d-flex flex-column">
+          <span className="fw-bold text-primary">Gasto</span>
+          <small className="text-muted">{dateLabel}</small>
+        </div>
 
-      <Like onClick={async () => {
-        await deleteExpense(user.uid, id);
-        reload();
-      }}>
-        <FcLike size='25px' />
-      </Like>
-      <Like onClick={edit}>
-        <FaPencilAlt size='25px' />
-      </Like>
-    </Container>
+        <div className="ms-auto d-flex gap-2">
+          <button className="btn btn-outline-warning btn-icon" onClick={onEdit} title="Editar gasto" aria-label="Editar">
+            <FaPencilAlt size={14} />
+          </button>
+          <button className="btn btn-outline-danger btn-icon" onClick={onAskDelete} title="Eliminar gasto" aria-label="Eliminar">
+            <FaTrash size={14} />
+          </button>
+        </div>
+      </div>
+
+      {/* Body con concepto e importe */}
+      <div className="card-body d-flex align-items-start justify-content-between gap-3">
+        <p className="mb-0" style={{ wordBreak: "break-word", lineHeight: 1.45 }}>
+          {content}
+        </p>
+        <span className="price-chip">{price}</span>
+      </div>
+    </div>
   );
 };
 
-export default CountContent;
-
 CountContent.propTypes = {
-  reload: PropTypes.func,
-  edit: PropTypes.func,
   id: PropTypes.string,
   content: PropTypes.string,
-  price: PropTypes.string,
-  date: PropTypes.string,
+  price: PropTypes.string,      // ya viene formateado
+  dateLabel: PropTypes.string,  // dd/mm/yyyy
+  onEdit: PropTypes.func,
+  onAskDelete: PropTypes.func,
 };
+
+export default CountContent;

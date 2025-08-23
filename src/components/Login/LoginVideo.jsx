@@ -1,29 +1,38 @@
-import { useState } from 'react'
-import Dancing from '../../assets/dancingCouple.mp4'
-import Hands from '../../assets/hands.mp4'
-import Walking from '../../assets/walkingCouple.mp4'
-import { Container, Video } from './style'
+import { useState, useEffect, useRef } from "react";
+import Dancing from "../../assets/dancingCouple.mp4";
+import Hands from "../../assets/hands.mp4";
+import Walking from "../../assets/walkingCouple.mp4";
 
 const LoginVideo = () => {
+  const videos = [Walking, Dancing, Hands];
+  const [idx, setIdx] = useState(0);
+  const videoRef = useRef(null);
 
-  const videos = [
-    Walking,
-    Dancing,
-    Hands,
-  ]
+  const nextVideo = () => setIdx((i) => (i + 1) % videos.length);
 
-  const [video, setVideo] = useState(0);
+  useEffect(() => {
+    // Autoplay en móviles requiere muted + playsInline
+    videoRef.current?.play?.();
+  }, [idx]);
 
-  const handleVideo = () => {
-    setVideo((prevIndex) => (prevIndex + 1) % videos.length)
-  }
   return (
-    <Container>
-      <Video src={videos[video]} autoPlay loop={false} muted controls={false}
-        controlsList='nodowload nofullscreen noremotepplayback'
-        onEnded={handleVideo}></Video>
-    </Container>
-  )
-}
+    <div className="login-bg">
+      <video
+        key={idx} // fuerza recarga al cambiar src
+        ref={videoRef}
+        src={videos[idx]}
+        className="login-bg-video"
+        autoPlay
+        muted
+        playsInline
+        loop={false}
+        controls={false}
+        onEnded={nextVideo}
+        // Evita menús de descarga (soportado en navegadores modernos)
+        controlsList="nodownload noremoteplayback nofullscreen"
+      />
+    </div>
+  );
+};
 
-export default LoginVideo
+export default LoginVideo;

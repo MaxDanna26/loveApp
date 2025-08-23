@@ -1,21 +1,26 @@
-import { createContext, useState, useContext } from 'react';
-import PropTypes from 'prop-types'
+import { createContext, useContext, useEffect, useState } from "react";
+import { auth } from "../services/firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import PropTypes from "prop-types";
 
-const AppContext = createContext();
+const Ctx = createContext(null);
+export const useUserContext = () => useContext(Ctx);
 
-export const useUserContext = () => useContext(AppContext);
+export default function UserProvider({ children }) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // ⬅️ empieza cargando
 
-const UserProvider = ({ children }) => {
-  const [user, setUser] = useState();
-  return (
-    <AppContext.Provider value={{ user, setUser }}>
-      {children}
-    </AppContext.Provider>
-  );
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (u) => {
+      setUser(u);
+      setLoading(false);
+    });
+    return () => unsub();
+  }, []);
+
+  return <Ctx.Provider value={{ user, loading }}>{children}</Ctx.Provider>;
 }
-
-export default UserProvider;
 
 UserProvider.propTypes = {
-  children: PropTypes.node,
-}
+  children: PropTypes.node.isRequired,
+};

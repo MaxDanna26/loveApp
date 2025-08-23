@@ -1,24 +1,44 @@
-import { Back, Overlay, CloseButton, Container, TitlePop } from './styled';
-import PropTypes from 'prop-types';
+// RandomPlanPopUp.jsx
+import PropTypes from "prop-types";
 
-const PopUp = ({ visible, setVisible, planRandom }) => {
-
+const RandomPlanPopUp = ({ planRandom, onClose }) => {
   return (
-    <Overlay $visible={visible} onClick={() => setVisible(false)}>
-      <Back onClick={(e) => e.stopPropagation()}>
-        <Container $direction='column' >
-          <CloseButton onClick={() => setVisible(false)}>&times;</CloseButton>
-          <TitlePop>{planRandom}</TitlePop>
-        </Container>
-      </Back>
-    </Overlay>
+    <>
+      <div
+        className="modal fade show modal-love"
+        style={{ display: "block", background: "rgba(0,0,0,.6)" }}
+        tabIndex="-1"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content text-center">
+            <div className="modal-header border-0">
+              <h5 className="modal-title text-primary fw-bold">Plan aleatorio</h5>
+              <button type="button" className="btn-close" onClick={onClose} />
+            </div>
+            <div className="modal-body">
+              <p className="lead">{planRandom}</p>
+            </div>
+            <div className="modal-footer border-0">
+              <button className="btn btn-primary" onClick={onClose}>
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="modal-backdrop fade show"
+        onClick={onClose}
+      />
+    </>
   );
 };
 
-export default PopUp;
-
-PopUp.propTypes = {
-  visible: PropTypes.bool,
-  setVisible: PropTypes.func,
+RandomPlanPopUp.propTypes = {
   planRandom: PropTypes.string,
+  onClose: PropTypes.func,
 };
+
+export default RandomPlanPopUp;
