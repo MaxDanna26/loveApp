@@ -1,32 +1,31 @@
-// src/provider/UserProvider.jsx
 import { createContext, useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { auth } from "../services/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { completeGoogleRedirect } from "../services/auth";   // 👈 nuevo
 
-/* Contexto y hook */
+// Contexto y hook 
 const Ctx = createContext(null);
 export const useUserContext = () => useContext(Ctx);
 
-/* Provider */
+
 export default function UserProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);   // comienza “cargando”
+  const [loading, setLoading] = useState(true);   // comienza cargando
 
   useEffect(() => {
     let unsub = () => { };
 
     (async () => {
-      /* 1️⃣ Procesa, si lo hay, el resultado del flujo Google-Redirect */
+      // Completa la accion de loggearse con Google haciendo un redirect
       await completeGoogleRedirect().catch((e) =>
         console.error("Google redirect error:", e?.code, e?.message)
       );
 
-      /* 2️⃣ Luego escucha cambios de sesión normalmente */
+      // Luego escucha cambios de sesión normalmente
       unsub = onAuthStateChanged(auth, (u) => {
         setUser(u);
-        setLoading(false);         // primera respuesta → dejamos de “cargar”
+        setLoading(false);         // primera respuesta dejamos de cargar
       });
     })();
 

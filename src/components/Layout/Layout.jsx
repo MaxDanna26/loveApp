@@ -6,7 +6,7 @@ import { Offcanvas } from "bootstrap";
 const Layout = ({ children }) => {
   const navigate = useNavigate();
 
-  // Navegar SOLO cuando el offcanvas ya terminó de cerrarse
+  // Cerrar el offcanvas y navegar cuando termine de cerrarse
   const go = (path) => (e) => {
     e.preventDefault();
     const el = document.getElementById("menuOffcanvas");
@@ -14,21 +14,22 @@ const Layout = ({ children }) => {
       navigate(path);
       return;
     }
-    let inst = Offcanvas.getInstance(el);
-    if (!inst) inst = new Offcanvas(el);
+
+    const inst = Offcanvas.getOrCreateInstance(el);
 
     const onHidden = () => {
       el.removeEventListener("hidden.bs.offcanvas", onHidden);
-      // (por si acaso) limpia cualquier resto visual
-      document.querySelectorAll(".offcanvas-backdrop.show").forEach((b) => b.remove());
-      document.body.classList.remove("modal-open");
-      document.body.style.overflow = "";
       navigate(path);
     };
 
-    // Espera a que termine la animación de cierre
     el.addEventListener("hidden.bs.offcanvas", onHidden, { once: true });
-    inst.hide();
+
+    // Si está abierto, ciérralo; si ya está cerrado, navegamos directo
+    if (el.classList.contains("show")) {
+      inst.hide();
+    } else {
+      navigate(path);
+    }
   };
 
   return (
@@ -88,16 +89,44 @@ const Layout = ({ children }) => {
         <div className="offcanvas-body">
           <ul className="navbar-nav text-center">
             <li className="nav-item">
-              <a href="/" className="nav-link" onClick={go("/")}>Home</a>
+              <a
+                href="/"
+                className="nav-link"
+                data-bs-dismiss="offcanvas"
+                onClick={go("/")}
+              >
+                Home
+              </a>
             </li>
             <li className="nav-item">
-              <a href="/planes" className="nav-link" onClick={go("/planes")}>Planes</a>
+              <a
+                href="/planes"
+                className="nav-link"
+                data-bs-dismiss="offcanvas"
+                onClick={go("/planes")}
+              >
+                Planes
+              </a>
             </li>
             <li className="nav-item">
-              <a href="/cuentas" className="nav-link" onClick={go("/cuentas")}>Cuentas</a>
+              <a
+                href="/cuentas"
+                className="nav-link"
+                data-bs-dismiss="offcanvas"
+                onClick={go("/cuentas")}
+              >
+                Cuentas
+              </a>
             </li>
             <li className="nav-item">
-              <a href="/expresate" className="nav-link" onClick={go("/expresate")}>Exprésate</a>
+              <a
+                href="/expresate"
+                className="nav-link"
+                data-bs-dismiss="offcanvas"
+                onClick={go("/expresate")}
+              >
+                Exprésate
+              </a>
             </li>
           </ul>
 
@@ -107,12 +136,15 @@ const Layout = ({ children }) => {
               onClick={(e) => {
                 e.preventDefault();
                 const el = document.getElementById("menuOffcanvas");
-                let inst = el ? Offcanvas.getInstance(el) || new Offcanvas(el) : null;
-                if (inst) {
-                  el.addEventListener("hidden.bs.offcanvas", () => logout(), { once: true });
+                const inst = el ? Offcanvas.getOrCreateInstance(el) : null;
+
+                const doLogout = () => logout();
+
+                if (el && el.classList.contains("show") && inst) {
+                  el.addEventListener("hidden.bs.offcanvas", doLogout, { once: true });
                   inst.hide();
                 } else {
-                  logout();
+                  doLogout();
                 }
               }}
             >
