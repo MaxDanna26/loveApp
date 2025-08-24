@@ -16,7 +16,7 @@ const PreviewModal = ({ url, onClose }) => {
           <div className="modal-content">
             <div className="modal-header border-0">
               <h5 className="modal-title text-primary">
-                <i className="bi bi-heart-fill me-2"></i>Vista previa
+                <i className="bi bi-heart-fill me-2"></i>Bonito recuerdo
               </h5>
               <button type="button" className="btn-close" onClick={onClose} aria-label="Cerrar"></button>
             </div>
