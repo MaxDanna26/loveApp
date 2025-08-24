@@ -15,7 +15,7 @@ const Login = () => {
     );
   }
 
-  // Si ya hay sesión, redirige a Home (SPA)
+  // Si ya hay sesión, redirige a Home
   if (user) {
     return <Navigate to="/" replace />;
   }
