@@ -1,17 +1,29 @@
-import { auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, doc, setDoc, db, } from "./firebase";
-import { GoogleAuthProvider, signInWithPopup, signInWithRedirect, } from "firebase/auth";
+// services/auth.js
+import {
+  auth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+  doc,
+  setDoc,
+  db,
+} from "./firebase";
+import {
+  GoogleAuthProvider,
+  signInWithRedirect,
+  getRedirectResult,
+} from "firebase/auth";
 
 /**
  * REGISTRO CON EMAIL/PASSWORD
- * - Crea el usuario de Firebase
- * - Asegura un doc vacío en Firestore: users/{uid}
- * - Devuelve uid o message de error
+ * - Crea el usuario en Firebase
+ * - Asegura doc en Firestore: users/{uid}
+ * - Devuelve uid o message de error (compat con tu código)
  */
 export const signUp = async (email, password) => {
   try {
     const { user } = await createUserWithEmailAndPassword(auth, email, password);
-    const docRef = doc(db, "users", user.uid);
-    await setDoc(docRef, {}, { merge: true }); // asegura doc
+    await setDoc(doc(db, "users", user.uid), {}, { merge: true });
     return user.uid;
   } catch (err) {
     return err.message;
@@ -20,7 +32,7 @@ export const signUp = async (email, password) => {
 
 /**
  * LOGIN CON EMAIL/PASSWORD
- * - Devuelve uid o message de error
+ * - Devuelve uid o message de error (compat)
  */
 export const signIn = async (email, password) => {
   try {
@@ -34,48 +46,34 @@ export const signIn = async (email, password) => {
 
 /**
  * LOGIN CON GOOGLE
- * - En iOS/Safari usa redirect directo (más estable)
- * - En desktop intenta popup; si falla, hace fallback a redirect
- * - Cuando el popup funciona, asegura doc en Firestore
- * - En redirect, la navegación la manejará tu app al volver (onAuthStateChanged)
+ * - Usa SIEMPRE redirect (más fiable en móvil/iOS/webviews)
+ * - La navegación/estado la maneja tu app al volver por onAuthStateChanged
+ * - No retorna el user (puede ser null porque se redirige).
  */
 export const loginWithGoogle = async () => {
   const provider = new GoogleAuthProvider();
+  // opcional: fuerza selector de cuenta
+  provider.setCustomParameters({ prompt: "select_account" });
+  await signInWithRedirect(auth, provider);
+  return null;
+};
 
-  // Heurística simple para usar redirect primero en mobile Safari/iOS
-  const ua = navigator.userAgent || "";
-  const isIOS = /iPad|iPhone|iPod/.test(ua);
-  const isSafari = /^((?!chrome|android).)*safari/i.test(ua);
-
-  if (isIOS || isSafari) {
-    await signInWithRedirect(auth, provider);
-    return null; // al volver del redirect, onAuthStateChanged tendrá el user
-  }
-
+/**
+ * COMPLETAR REDIRECT (OPCIONAL)
+ * - Llamalo una vez tras el arranque (p. ej. en tu UserProvider o Login.jsx)
+ * - Si hay resultado de redirect, asegura el doc del usuario y lo devuelve.
+ * - Si no hubo redirect pendiente, devuelve null.
+ */
+export const completeGoogleRedirect = async () => {
   try {
-    // Desktop/Android: probamos popup primero
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-
-    // aseguro el doc del usuario (idempotente)
-    const docRef = doc(db, "users", user.uid);
-    await setDoc(docRef, {}, { merge: true });
-
-    return user; // mantenemos tu contrato anterior (retornar user)
-  } catch (err) {
-    const code = String(err?.code || "");
-    const shouldFallback =
-      code.includes("auth/popup-blocked") ||
-      code.includes("auth/popup-closed-by-user") ||
-      code.includes("auth/operation-not-supported-in-this-environment") ||
-      code.includes("auth/auth-domain-config-required");
-
-    if (shouldFallback) {
-      await signInWithRedirect(auth, provider);
-      return null;
+    const res = await getRedirectResult(auth);
+    if (res?.user) {
+      await setDoc(doc(db, "users", res.user.uid), {}, { merge: true });
+      return res.user;
     }
-
-    // Si no es de los esperables, re-lanzamos para que lo maneje quien llame
+    return null;
+  } catch (err) {
+    console.error("Google redirect error:", err);
     throw err;
   }
 };
