@@ -33,7 +33,7 @@ export default function UserProvider({ children }) {
     return () => unsub();
   }, []);
 
-  return <Ctx.Provider value={{ user, loading }}>{children}</Ctx.Provider>;
+  return <Ctx.Provider value={{ user, loading, setUser }}>{children}</Ctx.Provider>;
 }
 
 UserProvider.propTypes = {

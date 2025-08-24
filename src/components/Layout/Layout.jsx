@@ -1,4 +1,3 @@
-// Layout.jsx
 import PropTypes from "prop-types";
 import { logout } from "../../services/auth";
 import { NavLink, useNavigate } from "react-router-dom";

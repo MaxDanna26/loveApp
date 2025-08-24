@@ -10,7 +10,7 @@ import {
 } from "./firebase";
 import {
   GoogleAuthProvider,
-  signInWithRedirect,
+  signInWithPopup,
   getRedirectResult,
 } from "firebase/auth";
 
@@ -50,12 +50,11 @@ export const signIn = async (email, password) => {
  * - La navegación/estado la maneja tu app al volver por onAuthStateChanged
  * - No retorna el user (puede ser null porque se redirige).
  */
-export const loginWithGoogle = async () => {
+export const loginWithGoogle = () => {
   const provider = new GoogleAuthProvider();
-  // opcional: fuerza selector de cuenta
-  provider.setCustomParameters({ prompt: "select_account" });
-  await signInWithRedirect(auth, provider);
-  return null;
+  return signInWithPopup(auth, provider).then(result => {
+    return result.user;
+  });
 };
 
 /**
