@@ -1,30 +1,52 @@
 // ImageCard.jsx
 import PropTypes from "prop-types";
+import { useState } from "react";
 
 const ImageCard = ({ url, onPreview, onDelete }) => {
+  const [loaded, setLoaded] = useState(false);
+
   return (
-    <div className="position-relative love-card p-2 h-100 d-flex align-items-center justify-content-center">
-      <img
-        src={url}
-        alt="foto"
-        className="img-fluid img-love"
-        loading="lazy"
-        role="button"
-        onClick={onPreview}
-        title="Ver grande"
-      />
+    <div className="photo-card">
+      {/* Botón de borrar (rosa + icono blanco) */}
       <button
         type="button"
-        className="btn btn-sm btn-danger position-absolute"
-        style={{ top: 8, right: 8 }}
+        className="btn btn-icon btn-primary photo-action"
+        aria-label="Eliminar imagen"
+        title="Eliminar imagen"
         onClick={(e) => {
           e.stopPropagation();
           onDelete();
         }}
-        aria-label="Eliminar imagen"
-        title="Eliminar imagen"
       >
-        <i className="bi bi-trash"></i>
+        <i className="bi bi-trash text-white"></i>
+      </button>
+
+      {/* Tap / Preview */}
+      <button
+        type="button"
+        className="photo-tap"
+        onClick={onPreview}
+        aria-label="Ver imagen en grande"
+        title="Ver grande"
+      >
+        {/* Skeleton mientras carga */}
+        {!loaded && <span className="photo-skeleton" aria-hidden="true" />}
+
+        {/* Imagen */}
+        <img
+          src={url}
+          alt="foto"
+          className={`photo-media ${loaded ? "is-loaded" : ""}`}
+          loading="lazy"
+          decoding="async"
+          draggable={false}
+          onLoad={() => setLoaded(true)}
+        />
+
+        {/* Overlay visual con icono “ver” */}
+        <span className="photo-overlay" aria-hidden="true">
+          <i className="bi bi-eye"></i>
+        </span>
       </button>
     </div>
   );

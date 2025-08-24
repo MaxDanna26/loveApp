@@ -527,3 +527,140 @@ body {
   border-color: #ED5379 !important;
   box-shadow: 0 6px 16px rgba(237, 83, 121, .25);
 }
+
+/* ===== Photo Card ===== */
+.photo-card {
+  /* Borde degradado sutil (usa tu rosa) */
+  --photo-aspect: 4 / 5;
+  --ring: linear-gradient(135deg, rgba(var(--bs-primary-rgb), .9), rgba(255, 255, 255, .7));
+  position: relative;
+  border-radius: 12px;
+  padding: 1px;
+  /* truco para el “ring” */
+  background: var(--ring);
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .06);
+  transition: box-shadow .18s ease, transform .18s ease;
+}
+
+.photo-card::before {
+  /* interior glass */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 11px;
+  background:
+    radial-gradient(1200px 200px at 10% -10%, rgba(var(--bs-primary-rgb), .10), transparent 60%),
+    rgba(255, 255, 255, .88);
+  backdrop-filter: blur(6px);
+  z-index: 0;
+}
+
+.photo-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, .08);
+}
+
+/* Botón que ocupa la “ventana” de la foto */
+.photo-tap {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--photo-aspect);
+  border: 0;
+  padding: 0;
+  background: transparent;
+  border-radius: 10px;
+  /* interior */
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* Imagen */
+.photo-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.0001);
+  transition: transform .28s ease;
+  border-radius: inherit;
+  opacity: 0;
+}
+
+.photo-media.is-loaded {
+  opacity: 1;
+}
+
+/* Skeleton shimmer */
+.photo-skeleton {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(90deg,
+      rgba(0, 0, 0, .06) 25%,
+      rgba(0, 0, 0, .12) 37%,
+      rgba(0, 0, 0, .06) 63%);
+  background-size: 400% 100%;
+  animation: photo-shimmer 1.3s infinite;
+}
+
+@keyframes photo-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: 0 0;
+  }
+}
+
+/* Overlay de acción “ver” */
+.photo-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, .0), rgba(0, 0, 0, .18));
+  opacity: 0;
+  transition: opacity .18s ease, backdrop-filter .18s ease;
+  color: #fff;
+  font-size: 1.35rem;
+}
+
+.photo-tap:hover .photo-overlay,
+.photo-tap:focus-visible .photo-overlay {
+  opacity: 1;
+  backdrop-filter: saturate(1.05);
+}
+
+/* Zoom suave al hover/focus */
+.photo-tap:hover .photo-media,
+.photo-tap:focus-visible .photo-media {
+  transform: scale(1.03);
+}
+
+/* Botón borrar (usa tus utilidades .btn-icon .btn-outline-danger) */
+.photo-action {
+  position: absolute;
+  z-index: 2;
+  top: 8px;
+  right: 8px;
+  opacity: 0;
+  transition: opacity .18s ease, transform .18s ease;
+}
+
+.photo-card:hover .photo-action,
+.photo-tap:focus-visible~.photo-action,
+.photo-action:focus-visible {
+  opacity: 1;
+}
+
+/* Foco accesible */
+.photo-tap:focus-visible {
+  outline: 2px solid rgba(var(--bs-primary-rgb), .9);
+  outline-offset: 2px;
+  border-radius: 12px;
+}

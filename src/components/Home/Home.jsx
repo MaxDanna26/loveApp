@@ -166,6 +166,7 @@ const Home = () => {
         <h1 className="fw-bold text-primary mb-1">
           Nuestros recuerdos <i className="bi bi-heart-fill"></i>
         </h1>
+        <p className="text-muted mb-0">Agrega las fotos que quieras como bonitos recuerdos!</p>
         <p className="text-muted mb-0">{images.length} foto(s)</p>
         {/* lector de pantalla */}
         <span className="visually-hidden" aria-live="polite">{announce}</span>
