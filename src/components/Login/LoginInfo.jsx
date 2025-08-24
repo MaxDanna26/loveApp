@@ -1,45 +1,22 @@
+// src/components/Login/LoginInfo.jsx
 import { useState } from "react";
-import { useNavigate, useInRouterContext } from "react-router-dom";
 import { loginWithGoogle, signUp, signIn } from "../../services/auth";
 import { createUser } from "./api";
 import { auth, sendPasswordResetEmail } from "../../services/firebase";
-import { onAuthStateChanged } from "firebase/auth";
 
 const emailOk = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
-// Espera a que Firebase emita el usuario tras el login (soluciona la carrera)
-async function waitForAuthUser(timeoutMs = 2000) {
-  return new Promise((resolve) => {
-    let settled = false;
-    const t = setTimeout(() => {
-      if (!settled) {
-        settled = true;
-        resolve(auth.currentUser || null);
-      }
-    }, timeoutMs);
-    const unsub = onAuthStateChanged(auth, (u) => {
-      if (!settled && u) {
-        settled = true;
-        clearTimeout(t);
-        unsub();
-        resolve(u);
-      }
-    });
-  });
-}
-
 const LoginInfo = () => {
-  const inRouter = useInRouterContext();
-  const navigate = inRouter ? useNavigate() : null;
-
   const [mode, setMode] = useState("signin"); // 'signin' | 'signup'
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
   const [pwd2, setPwd2] = useState("");
   const [showPwd, setShowPwd] = useState(false);
+
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState("");
   const [toast, setToast] = useState("");
+
   const [showReset, setShowReset] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
 
@@ -47,14 +24,6 @@ const LoginInfo = () => {
     emailOk(email) &&
     pwd.length >= 6 &&
     (mode === "signin" || (mode === "signup" && pwd === pwd2));
-
-  const goHome = () => {
-    if (inRouter && navigate) {
-      navigate("/", { replace: true }); // SPA ✅
-    } else {
-      window.location.assign("/"); // fallback (no debería hacer falta)
-    }
-  };
 
   const handleSubmit = async (e) => {
     e?.preventDefault();
@@ -65,31 +34,16 @@ const LoginInfo = () => {
       if (mode === "signup") {
         await signUp(email, pwd);
         await createUser({ correo: email });
-        await waitForAuthUser(); // ⬅️ espera a que el contexto reciba user
-        goHome();
+        // No forzamos navegación: Login.jsx redirige cuando cambie el user
+        setToast("Cuenta creada. Ingresando…");
+        setTimeout(() => setToast(""), 2200);
       } else {
-        // 1º intento tal cual
         await signIn(email, pwd);
-        await waitForAuthUser(); // ⬅️ evita quedarte en /login
-        goHome();
+        setToast("Sesión iniciada. Ingresando…");
+        setTimeout(() => setToast(""), 2200);
       }
-    } catch (err1) {
-      // Reintento silencioso con email normalizado por si hay espacios/mayúsculas
-      if (mode === "signin") {
-        try {
-          const norm = email.trim().toLowerCase();
-          if (norm !== email) {
-            await signIn(norm, pwd);
-            await waitForAuthUser();
-            goHome();
-            return;
-          }
-        } catch (err2) {
-          setMsg(parseFirebaseErr(err2));
-        }
-      } else {
-        setMsg(parseFirebaseErr(err1));
-      }
+    } catch (err) {
+      setMsg(parseFirebaseErr(err));
     } finally {
       setBusy(false);
     }
@@ -100,8 +54,8 @@ const LoginInfo = () => {
     setMsg("");
     try {
       await loginWithGoogle();
-      await waitForAuthUser(); // ⬅️ asegura el user antes de navegar
-      goHome();
+      setToast("Sesión con Google lista. Ingresando…");
+      setTimeout(() => setToast(""), 2200);
     } catch (err) {
       setMsg(parseFirebaseErr(err));
     } finally {
