@@ -1,4 +1,3 @@
-// ImageCard.jsx
 import PropTypes from "prop-types";
 import { useState } from "react";
 
@@ -7,7 +6,6 @@ const ImageCard = ({ url, onPreview, onDelete }) => {
 
   return (
     <div className="photo-card">
-      {/* Botón de borrar (rosa + icono blanco) */}
       <button
         type="button"
         className="btn btn-icon btn-primary photo-action"

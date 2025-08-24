@@ -111,8 +111,8 @@ const Home = () => {
       if (toDelete.deleteUrl) {
         try {
           await fetch(toDelete.deleteUrl, { method: "GET" });
-        } catch {
-          /* noop */
+        } catch (e) {
+          console.warn("No se pudo borrar en ImgBB (no bloqueante):", e);
         }
       }
 
