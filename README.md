@@ -22,12 +22,10 @@ Herramienta para parejas hecha con **React + Firebase**. La idea es **ayudar a c
 
 ## 🖼️ Capturas
 
-> Guardá las imágenes en `./docs/` para que GitHub las muestre.
-
-- ![Login](./docs/login.png)
-- ![Planes](./docs/plans.png)
-- ![Exprésate](./docs/expresate.png)
-- ![Cuentas](./docs/gastos.png)
+- ![Login](./public/login.png)
+- ![Planes](./public/plans.png)
+- ![Exprésate](./public/expresate.png)
+- ![Cuentas](./public/gastos.png)
 
 ---
 
