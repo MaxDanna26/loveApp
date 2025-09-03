@@ -24,7 +24,7 @@ Herramienta para parejas hecha con **React + Firebase**. La idea es **ayudar a c
 
 - ![Login](./public/login.png)
 - ![Planes](./public/plans.png)
-- ![Exprésate](./public/expresate.png)
+- ![Exprésate](./public/Expresate.png)
 - ![Cuentas](./public/gastos.png)
 
 ---
